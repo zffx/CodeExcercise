@@ -32,7 +32,6 @@ void testTask01()
         std::cout << *inputIter << " ===>" << std::endl
                   << (*outputIter == "" ? "Empty String" : *outputIter)
                   << std::endl
-                  << std::endl
                   << std::endl;
         ++inputIter;
         ++outputIter;

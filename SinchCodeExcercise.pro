@@ -8,8 +8,8 @@ SOURCES += main.cpp \
     task_02.cc
 
 
-include(deployment.pri)
-qtcAddDeployment()
+#include(deployment.pri)
+#qtcAddDeployment()
 
 HEADERS += \
     task_01.h \

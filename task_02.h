@@ -42,7 +42,7 @@ namespace rebtel_task_02 {
   // interface which is used in Foo's implementation.
   class Mutex {
  public:
-    static Mutex* Create();
+    static Mutex* Create(){};
     virtual ~Mutex() = 0;
     virtual void Lock() = 0;
     virtual void Unlock() = 0;
