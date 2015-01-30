@@ -48,5 +48,22 @@ namespace rebtel_task_02 {
     virtual void Unlock() = 0;
   };
 
+  // For the sake of simplicity, the Locker class is implemented directly in the
+  // header file
+  class Locker {
+  public:
+      explicit Locker(Mutex* mutex) : _mutex(mutex) {
+          _mutex->Lock();
+      }
 
+      ~Locker() {
+          _mutex->Unlock();
+      }
+
+  private:
+      Mutex* _mutex;
+      //make the instance of resource managing class uncopyable
+      Locker(const Locker&);
+      Locker& operator=(const Locker&);
+  };
 }

@@ -18,41 +18,49 @@ Foo::~Foo() {
 }
 
 bool Foo::connect(const std::string& address) {
-  _mutex->Lock();
+  // _mutex->Lock();
+  // Use RAII to control the lock here
+  Locker(_mutex);
 
   if(address.length() == 0){
-    _mutex->Unlock();
+    // The next line is not needed anymore as Unlock() will be
+    // called by the ~Locker() anyway when execution leaves the function
+    // _mutex->Unlock();
     return false;
   }
   
   _address = std::string(address);
   _is_connected = true;
-  
-  _mutex->Unlock();
+
+  // commented out for the same reason as above, this is a much easier way of
+  // maintaining code too
+  //_mutex->Unlock();
 
   return true;
 }
 
 void Foo::disconnect() {
-  _mutex->Lock();
+  //_mutex->Lock();
+  Locker(_mutex);
 
   if(!_is_connected){
-    _mutex->Unlock();
+    //_mutex->Unlock();
     return;
   }
 
   _address = "";
   _is_connected = false;
 
-  _mutex->Unlock();
+  //_mutex->Unlock();
   
 }
 
 bool Foo::isConnected() const {
   bool connected = false;
-  _mutex->Lock();
+  Locker(_mutex);
+  //_mutex->Lock();
   connected = _is_connected;
-  _mutex->Unlock();
+  //_mutex->Unlock();
   return connected;
 }
 
