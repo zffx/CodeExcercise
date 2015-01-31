@@ -9,7 +9,11 @@
 
 namespace rebtel_task_02 {
 
-Foo::Foo() : _mutex(Mutex::Create()) {
+//The initialization list is incomplete, fixed it below
+Foo::Foo() :
+    _mutex(Mutex::Create()),
+    _address(std::string()),
+    _is_connected(false){
   
 }
 
@@ -21,15 +25,9 @@ bool Foo::connect(const std::string& address) {
   // Use RAII to control the lock here
   // _mutex->Lock();
 
-  //Locker(_mutex); //this line doesn't compile
-  Locker l(_mutex); /*once you uncomment the last line,
-                      this line will change from compilable
-                      to uncompilable, trying to call the
-                      copy constructor*/
+  Locker locker(_mutex);
 
-  Locker(this->_mutex);
-
-
+  //should we check _is_connected here before setting the values?
 
   if(address.length() == 0){
     // The next line is not needed anymore as Unlock() will be
