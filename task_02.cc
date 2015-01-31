@@ -18,13 +18,22 @@ Foo::~Foo() {
 }
 
 bool Foo::connect(const std::string& address) {
-  // _mutex->Lock();
   // Use RAII to control the lock here
-  Locker(_mutex);
+  // _mutex->Lock();
+
+  //Locker(_mutex); //this line doesn't compile
+  Locker l(_mutex); /*once you uncomment the last line,
+                      this line will change from compilable
+                      to uncompilable, trying to call the
+                      copy constructor*/
+
+  Locker(this->_mutex);
+
+
 
   if(address.length() == 0){
     // The next line is not needed anymore as Unlock() will be
-    // called by the ~Locker() anyway when execution leaves the function
+    // called by ~Locker() anyway when execution leaves the function
     // _mutex->Unlock();
     return false;
   }
@@ -41,7 +50,7 @@ bool Foo::connect(const std::string& address) {
 
 void Foo::disconnect() {
   //_mutex->Lock();
-  Locker(_mutex);
+  Locker locker(_mutex);
 
   if(!_is_connected){
     //_mutex->Unlock();
@@ -57,7 +66,7 @@ void Foo::disconnect() {
 
 bool Foo::isConnected() const {
   bool connected = false;
-  Locker(_mutex);
+  Locker locker(_mutex);
   //_mutex->Lock();
   connected = _is_connected;
   //_mutex->Unlock();

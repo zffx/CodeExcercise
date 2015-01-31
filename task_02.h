@@ -17,7 +17,7 @@
 namespace rebtel_task_02 {
 
   class Mutex;
-  
+
   class Foo {
 
  public:
@@ -36,13 +36,13 @@ namespace rebtel_task_02 {
   };
 
   // Mutex, Cross-platform mutex wrapper
-  // 
+  //
   // IMPORTANT: You do not need to implement this.
   // The purpose of the declaration below is to provide the
   // interface which is used in Foo's implementation.
   class Mutex {
  public:
-    static Mutex* Create(){};
+    static Mutex* Create(){return NULL;} //just to make it compile
     virtual ~Mutex() = 0;
     virtual void Lock() = 0;
     virtual void Unlock() = 0;
@@ -52,16 +52,16 @@ namespace rebtel_task_02 {
   // header file
   class Locker {
   public:
-      explicit Locker(Mutex* mutex) : _mutex(mutex) {
-          _mutex->Lock();
+      explicit Locker(Mutex* mutex) : _locker_mutex(mutex) {
+          _locker_mutex->Lock();
       }
 
       ~Locker() {
-          _mutex->Unlock();
+          _locker_mutex->Unlock();
       }
 
   private:
-      Mutex* _mutex;
+      Mutex* _locker_mutex;
       //make the instance of resource managing class uncopyable
       Locker(const Locker&);
       Locker& operator=(const Locker&);
