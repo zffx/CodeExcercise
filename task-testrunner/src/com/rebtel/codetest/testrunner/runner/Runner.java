@@ -6,16 +6,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 @TestRunner
-public class Runner {
+public class Runner extends Log{
 
 	public static void run(String packageName) throws Exception 
 	{
 		int counterExecuted = 0, counterFailed = 0;
 		
-		ArrayList<Class> testsuites = utils.getClasses(packageName);
+		ArrayList<Class> testsuites = Utils.getClasses(packageName);
 		
 		for(Class testsuite : testsuites) {
-			//System.out.println(testsuite.getName());
 			Method[] testcases = testsuite.getMethods();	
 			for (Method method : testcases) {
 				if (method.isAnnotationPresent(Test.class)) {
@@ -23,16 +22,19 @@ public class Runner {
 					try {
 						method.invoke(testsuite.newInstance());					
 					} catch (Exception e) {
+						Log.log += "\n --- Results: FAILED: \n";
 						String testDescription = 
 								method.getAnnotation(Test.class).description();
-						System.out.println(testDescription);
+						Log.log += testDescription + "\n";
 						String assertionMessage = e.getCause().toString();
-						System.out.println(assertionMessage);
+						Log.log += assertionMessage + "\n --- \n";
 						++counterFailed;
 					} 
 				}
 			}
 		}
+		Log.log += "Tests run: " + counterExecuted + 
+				", Failures: " + counterFailed;
 	}	
 	
 
