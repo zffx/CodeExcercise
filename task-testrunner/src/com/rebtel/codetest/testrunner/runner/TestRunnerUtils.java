@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class Utils {
+/**
+ * This class is added mainly to provide a method which can find all the classes
+ * in a given package loaded by the current class loader. It can be extended
+ * to provide other utilities to the TestRunner.
+ */
+public class TestRunnerUtils {
 	/**
 	 * Scans all classes accessible from the context class loader which belong 
 	 * to the given package and subpackages.

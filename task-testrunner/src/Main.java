@@ -8,14 +8,21 @@ import com.rebtel.codetest.testrunner.annotations.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-public class Main extends Log{
+/**
+ * This is the entry point where the whole test runner application will be
+ * executed. It will invoke the entry point of the TestRunner class. The name of 
+ * the package containing all test cases is given in a variable called 
+ * testSuitesPackage.
+ */
+public class Main extends Logging{
 
 	public static void main(String[] args) throws Exception {
 
 		/* 
-		 * Here I assume that the class that I have implemented(Runner) can be
-		 * used directly in main, instead of searching for all classes with 
-		 * annotation "TestRunner" and iterating through them. 
+		 * Here I assume that instead of searching for all classes with 
+		 * annotation "TestRunner" and iterating through them, the class that I 
+		 * have implemented(a class called Runner with annotation TestRunner) 
+		 * can be used directly in main().  
 		 * 
 		 * If I am not allowed to use my class Runner directly here, please 
 		 * check the commented code at the end of main() method. It will search 
@@ -30,6 +37,7 @@ public class Main extends Log{
 		 */
 		
 		String testSuitesPackage = "com.rebtel.codetest.testrunner.testsuites";
+		
 		Class testRunner = Runner.class;
 		
 		TestRunner annotation = 
@@ -37,12 +45,15 @@ public class Main extends Log{
 		
 		Method method = 
 				testRunner.getMethod(annotation.runMethodName(), String.class);
-		Log.log = "Running test in \'" + 
-				testSuitesPackage + "\'";
+		
+		Logging.log = "Running test in \'" + 
+				testSuitesPackage + "\'\n";
+		
 		method.invoke(
 				testRunner.newInstance(), 
 				testSuitesPackage);
-		System.out.print(Log.log);
+		
+		System.out.print(Logging.log);
 		
 		/*The implementation below illustrates that the test runner class can
 		 * also be found by searching a given package, so if the requirements 

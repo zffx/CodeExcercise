@@ -5,14 +5,19 @@ import com.rebtel.codetest.testrunner.annotations.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+/**
+ * This class implements the logic of executing all "Test" methods in all
+ * classes in a given package. 
+ */
+
 @TestRunner
-public class Runner extends Log{
+public class Runner extends Logging{
 
 	public static void run(String packageName) throws Exception 
 	{
 		int counterExecuted = 0, counterFailed = 0;
 		
-		ArrayList<Class> testsuites = Utils.getClasses(packageName);
+		ArrayList<Class> testsuites = TestRunnerUtils.getClasses(packageName);
 		
 		for(Class testsuite : testsuites) {
 			Method[] testcases = testsuite.getMethods();	
@@ -22,18 +27,18 @@ public class Runner extends Log{
 					try {
 						method.invoke(testsuite.newInstance());					
 					} catch (Exception e) {
-						Log.log += "\n --- Results: FAILED: \n";
+						Logging.log += "\n --- Results: FAILED: \n";
 						String testDescription = 
 								method.getAnnotation(Test.class).description();
-						Log.log += testDescription + "\n";
+						Logging.log += testDescription + "\n";
 						String assertionMessage = e.getCause().toString();
-						Log.log += assertionMessage + "\n --- \n";
+						Logging.log += assertionMessage + "\n --- \n";
 						++counterFailed;
 					} 
 				}
 			}
 		}
-		Log.log += "Tests run: " + counterExecuted + 
+		Logging.log += "Tests run: " + counterExecuted + 
 				", Failures: " + counterFailed;
 	}	
 	
