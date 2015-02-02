@@ -79,3 +79,6 @@ $RECYCLE.BIN/
 
 #Bo
 deployment.pri
+.classpath
+.project
+*.class
